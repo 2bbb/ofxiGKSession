@@ -48,6 +48,12 @@ public:
 #pragma mark -
 #pragma mark initialzie
 
+ofxiGKSession::ofxiGKSession() {
+    manager = NULL;
+    receiver = NULL;
+    sendDataMode = OFXI_GKSESSION_SEND_DATA_RELIABLE;
+}
+
 void ofxiGKSession::setup(string _displayName, string _sessionID){
     wrapper = [[ofxiGKSessionWrapper alloc] init];
     [wrapper setDisplayName:convert(_displayName)
@@ -66,6 +72,10 @@ void ofxiGKSession::startServer(ofxiGKSessionMode mode) {
     [wrapper setManager:(manager ? manager : (manager = new ofxiGKSessionDefaultManager(this)))];
     [wrapper setDataReceiver:(receiver ? receiver : (receiver = (new ofxiGKSessionDefaultDataReceiver())))];
     [wrapper startSessionForSessionMode:(GKSessionMode)mode];
+}
+
+void ofxiGKSession::setSendDataMode(ofxiGKSessionSendDataMode _sendDataMode) {
+    sendDataMode = _sendDataMode;
 }
 
 void ofxiGKSession::setEnable() {
@@ -112,25 +122,29 @@ void ofxiGKSession::denyConnection(string peerID) {
 void ofxiGKSession::sendData(const string &str) {
     [[wrapper session] sendDataToAllPeers:[convert(str) dataUsingEncoding:NSUTF8StringEncoding
                                                      allowLossyConversion:NO]
-                             withDataMode:GKSendDataReliable
+                             withDataMode:(GKSendDataMode)sendDataMode
                                     error:NULL];
 }
 
 void ofxiGKSession::sendData(const ofBuffer &buffer) {
     [[wrapper session] sendDataToAllPeers:convert(buffer)
-                             withDataMode:GKSendDataReliable
+                             withDataMode:(GKSendDataMode)sendDataMode
                                     error:NULL];
 }
 
 void ofxiGKSession::sendData(const string &str, const vector<string> &peers) {
-    
+    NSArray * array = convertToNSArrayFromVector(peers, convertFromStringToNSStringBlocks);
+    [[wrapper session] sendData:[convert(str) dataUsingEncoding:NSUTF8StringEncoding]
+                        toPeers:array
+                   withDataMode:(GKSendDataMode)sendDataMode
+                          error:NULL];
 }
 
 void ofxiGKSession::sendData(const ofBuffer &buffer, const vector<string> &peers) {
     NSArray * array = convertToNSArrayFromVector(peers, convertFromStringToNSStringBlocks);
     [[wrapper session] sendData:convert(buffer)
                         toPeers:array
-                   withDataMode:GKSendDataReliable
+                   withDataMode:(GKSendDataMode)sendDataMode
                           error:NULL];
 }
 

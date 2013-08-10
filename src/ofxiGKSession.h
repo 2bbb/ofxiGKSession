@@ -16,22 +16,26 @@
 @class ofxiGKSessionWrapper;
 
 typedef enum {
-    OFXI_GKSESSION_MODE_CLIENT = GKSessionModeClient,
     OFXI_GKSESSION_MODE_SERVER = GKSessionModeServer,
+    OFXI_GKSESSION_MODE_CLIENT = GKSessionModeClient,
     OFXI_GKSESSION_MODE_PEER   = GKSessionModePeer
 } ofxiGKSessionMode;
+
+typedef enum {
+    OFXI_GKSESSION_SEND_DATA_RELIABLE = GKSendDataReliable,
+    OFXI_GKSESSION_SEND_DATA_UNRELIABLE = GKSendDataUnreliable
+} ofxiGKSessionSendDataMode;
 
 class ofxiGKSession {
 public:
 #pragma mark initialzie
-    ofxiGKSession() {
-        manager = NULL;
-        receiver = NULL;
-    }
+    ofxiGKSession();
     void setup(string displayName, string sessionID = "ofxiGKSession");
     void setDataReceiver(ofxiGKSessionDataReceiver *receiver);
     void setManager(ofxiGKSessionManager *manager);
     void startServer(ofxiGKSessionMode sessionMode);
+    
+    void setSendDataMode(ofxiGKSessionSendDataMode mode);
     
     void setEnable();
     void setDisable();
@@ -60,5 +64,6 @@ private:
     ofxiGKSessionWrapper *wrapper;
     ofxiGKSessionManager *manager;
     ofxiGKSessionDataReceiver *receiver;
-    ofxiGKSessionMode sessionMode;
+    
+    ofxiGKSessionSendDataMode sendDataMode;
 };

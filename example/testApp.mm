@@ -18,9 +18,7 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-//    ofBuffer buffer;
-//    buffer.set("hoge");
-//    gkSession.sendData(buffer);
+    
 }
 
 //--------------------------------------------------------------
