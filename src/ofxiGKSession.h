@@ -5,38 +5,15 @@
 //
 //
 
-#ifndef __ofxiGKSession__
-#define __ofxiGKSession__
-
-#include "ofMain.h"
+#pragma once
 
 #import <GameKit/GameKit.h>
+#include "ofMain.h"
+
+#import "ofxiGKSessionManager.h"
+#import "ofxiGKSessionDataReceiver.h"
 
 @class ofxiGKSessionWrapper;
-
-class ofxiGKSession;
-
-class ofxiGKSessionManager {
-public:
-    ofxiGKSessionManager(ofxiGKSession *p2p);
-    
-    virtual void connectionWithPeerFailed(string peerID, string errorDescription);
-    virtual void fail(string errorDescription);
-    virtual void receiveConnectionRequest(string peerID);
-    
-    virtual void peerAvailable(string peerID);
-    virtual void peerConnecting(string peerID);
-    virtual void peerConnected(string peerID);
-    virtual void peerDisconnected(string peerID);
-    virtual void peerUnavailable(string peerID);
-private:
-    ofxiGKSession *gameKitP2P;
-};
-
-class ofxiGKSessionDataReceiver {
-public:
-    virtual void receiveData(const ofBuffer &buffer) = 0;
-};
 
 typedef enum {
     OFXI_GKSESSION_MODE_CLIENT = GKSessionModeClient,
@@ -46,6 +23,7 @@ typedef enum {
 
 class ofxiGKSession {
 public:
+#pragma mark initialzie
     ofxiGKSession() {
         manager = NULL;
         receiver = NULL;
@@ -54,29 +32,33 @@ public:
     void setDataReceiver(ofxiGKSessionDataReceiver *receiver);
     void setManager(ofxiGKSessionManager *manager);
     void startServer(ofxiGKSessionMode sessionMode);
+    
+    void setEnable();
+    void setDisable();
+    
+#pragma mark callback
     void connectToPeerID(string &peerID);
     void disconnectPeerFromAllPeers(string &peerID);
     void disconnectFromAllPeers();
     void acceptConnection(string peerID);
     void denyConnection(string peerID);
     
-    void setEnable();
-    void setDisable();
-    
-    void sendData(const string str);
+#pragma mark sending
+    void sendData(const string &str);
     void sendData(const ofBuffer &buffer);
     
+    void sendData(const string &str, const vector<string> &peers);
+    void sendData(const ofBuffer &buffer, const vector<string> &peers);
+#pragma mark get info
     const ofxiGKSessionMode getSessionMode() const;
+    const string getDisplayName() const;
+    const string getSessionID() const;
     
     vector<string> getConnectedPeers();
+    vector<string> getAvailablePeers();
 private:
-    string displayName;
-    string sessionID;
     ofxiGKSessionWrapper *wrapper;
     ofxiGKSessionManager *manager;
     ofxiGKSessionDataReceiver *receiver;
     ofxiGKSessionMode sessionMode;
 };
-
-
-#endif /* defined(__ofxiGKSession__) */
