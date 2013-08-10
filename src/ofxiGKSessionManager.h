@@ -13,8 +13,6 @@ class ofxiGKSession;
 
 class ofxiGKSessionManager {
 public:
-    ofxiGKSessionManager(ofxiGKSession *p2p);
-    
 #pragma mark override [if need]
     virtual void connectionWithPeerFailed(string peerID, string errorDescription);
     virtual void fail(string errorDescription);
@@ -25,6 +23,4 @@ public:
     virtual void peerConnected(string peerID);
     virtual void peerDisconnected(string peerID);
     virtual void peerUnavailable(string peerID);
-protected:
-    ofxiGKSession *gameKitP2P;
 };
