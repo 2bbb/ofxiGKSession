@@ -28,7 +28,9 @@ class ofxiGKSessionDefaultManager : public ofxiGKSessionManager {
 private:
     typedef ofxiGKSessionManager Super;
 public:
-    ofxiGKSessionDefaultManager(ofxiGKSession *p2p) : ofxiGKSessionManager(p2p) {}
+    ofxiGKSessionDefaultManager(ofxiGKSession *p2p) {
+        gameKitP2P = p2p;
+    }
 
     virtual virtual void receiveConnectionRequest(string peerID) override {
         Super::receiveConnectionRequest(peerID);
@@ -39,6 +41,8 @@ public:
         Super::peerAvailable(peerID);
         gameKitP2P->connectToPeerID(peerID);
     }
+private:
+    ofxiGKSession *gameKitP2P;
 };
 
 // ==========================================================================================
@@ -54,9 +58,9 @@ ofxiGKSession::ofxiGKSession() {
     sendDataMode = OFXI_GKSESSION_SEND_DATA_RELIABLE;
 }
 
-void ofxiGKSession::setup(string _displayName, string _sessionID){
+void ofxiGKSession::setup(string _sessionID, string _displayName) {
     wrapper = [[ofxiGKSessionWrapper alloc] init];
-    [wrapper setDisplayName:convert(_displayName)
+    [wrapper setDisplayName:(_displayName == "") ? nil : convert(_displayName)
                andSessionID:convert(_sessionID)];
 }
 
@@ -78,11 +82,11 @@ void ofxiGKSession::setSendDataMode(ofxiGKSessionSendDataMode _sendDataMode) {
     sendDataMode = _sendDataMode;
 }
 
-void ofxiGKSession::setEnable() {
+void ofxiGKSession::setAvailable() {
     [[wrapper session] setAvailable:YES];
 }
 
-void ofxiGKSession::setDisable() {
+void ofxiGKSession::setUnavailable() {
     [[wrapper session] setAvailable:NO];
 }
 
@@ -157,6 +161,10 @@ const ofxiGKSessionMode ofxiGKSession::getSessionMode() const {
 
 const string ofxiGKSession::getDisplayName() const {
     return convert([[wrapper session] displayName]);
+}
+
+const string ofxiGKSession::getDisplayName(string peer) const {
+    return convert([[wrapper session] displayNameForPeer:convert(peer)]);
 }
 
 const string ofxiGKSession::getSessionID() const {

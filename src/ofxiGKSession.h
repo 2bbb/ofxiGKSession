@@ -10,8 +10,8 @@
 #import <GameKit/GameKit.h>
 #include "ofMain.h"
 
-#import "ofxiGKSessionManager.h"
 #import "ofxiGKSessionDataReceiver.h"
+#import "ofxiGKSessionManager.h"
 
 @class ofxiGKSessionWrapper;
 
@@ -30,15 +30,15 @@ class ofxiGKSession {
 public:
 #pragma mark initialzie
     ofxiGKSession();
-    void setup(string displayName, string sessionID = "ofxiGKSession");
+    void setup(string sessionID = "ofxiGKSession", string displayName = "");
     void setDataReceiver(ofxiGKSessionDataReceiver *receiver);
     void setManager(ofxiGKSessionManager *manager);
-    void startServer(ofxiGKSessionMode sessionMode);
+    void startServer(ofxiGKSessionMode sessionMode = OFXI_GKSESSION_MODE_PEER);
     
     void setSendDataMode(ofxiGKSessionSendDataMode mode);
     
-    void setEnable();
-    void setDisable();
+    void setAvailable();
+    void setUnavailable();
     
 #pragma mark callback
     void connectToPeerID(string &peerID);
@@ -53,9 +53,11 @@ public:
     
     void sendData(const string &str, const vector<string> &peers);
     void sendData(const ofBuffer &buffer, const vector<string> &peers);
+
 #pragma mark get info
     const ofxiGKSessionMode getSessionMode() const;
     const string getDisplayName() const;
+    const string getDisplayName(string peer) const;
     const string getSessionID() const;
     
     vector<string> getConnectedPeers();
