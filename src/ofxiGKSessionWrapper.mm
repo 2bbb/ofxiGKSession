@@ -19,8 +19,8 @@
 - (instancetype)init {
     self = [super init];
     if(self) {
-        connectedPeers = [[NSMutableArray alloc] init];
-        availablePeers = [[NSMutableArray alloc] init];
+        connectedPeers = [[NSMutableDictionary alloc] init];
+        availablePeers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -62,11 +62,27 @@
 }
 
 - (NSArray *)connectedPeers {
-    return connectedPeers;
+    return [connectedPeers allValues];
+}
+
+- (NSArray *)connectedDisplayNames {
+    return [connectedPeers allKeys];
+}
+
+- (NSString *)connectedPeerIdForDisplayName:(NSString *)_displayName {
+    return [connectedPeers objectForKey:_displayName];
 }
 
 - (NSArray *)availablePeers {
-    return availablePeers;
+    return [availablePeers allValues];
+}
+
+- (NSArray *)availableDisplayNames {
+    return [availablePeers allKeys];
+}
+
+- (NSString *)availablePeerIdForDisplayName:(NSString *)_displayName {
+    return [availablePeers objectForKey:_displayName];
 }
 
 - (void)session:(GKSession *)_session willAcceptConnectionRequestFromPeer:(NSString *)peerID {
@@ -104,25 +120,35 @@
     if([peerID isEqualToString:[_session peerID]]) return;
     string _peerID = convert(peerID);
     switch (state) {
-        case GKPeerStateAvailable:
-            [availablePeers addObject:peerID];
+        case GKPeerStateAvailable: {
+            NSString *peerName = [_session displayNameForPeer:peerID];
+            [availablePeers setObject:peerID
+                               forKey:peerName];
             manager->peerAvailable(_peerID);
             break;
+        }
         case GKPeerStateConnecting:
             manager->peerConnecting(_peerID);
             break;
-        case GKPeerStateConnected:
-            [connectedPeers addObject:peerID];
+        case GKPeerStateConnected: {
+            NSString *peerName = [_session displayNameForPeer:peerID];
+            [connectedPeers setObject:peerID
+                               forKey:peerName];
             [self session:session willAcceptConnectionRequestFromPeer:peerID];
             break;
-        case GKPeerStateDisconnected:
-            [connectedPeers removeObject:peerID];
+        }
+        case GKPeerStateDisconnected: {
+            NSString *peerName = [_session displayNameForPeer:peerID];
+            [connectedPeers removeObjectForKey:peerName];
             manager->peerDisconnected(_peerID);
             break;
-        case GKPeerStateUnavailable:
-            [availablePeers removeObject:peerID];
+        }
+        case GKPeerStateUnavailable: {
+            NSString *peerName = [_session displayNameForPeer:peerID];
+            [availablePeers removeObjectForKey:peerName];
             manager->peerUnavailable(_peerID);
             break;
+        }
         default:
             break;
     }

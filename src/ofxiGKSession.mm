@@ -153,7 +153,7 @@ void ofxiGKSession::sendData(const ofBuffer &buffer, const vector<string> &peers
 }
 
 #pragma mark -
-#pragma mark get info
+#pragma mark get information
 
 const ofxiGKSessionMode ofxiGKSession::getSessionMode() const {
     return (ofxiGKSessionMode)[[wrapper session] sessionMode];
@@ -171,10 +171,23 @@ const string ofxiGKSession::getSessionID() const {
     return convert([[wrapper session] sessionID]);
 }
 
+const string ofxiGKSession::getConnectedPeer(string displayName) const {
+    NSString *peerID = [wrapper connectedPeerIdForDisplayName:convert(displayName)];
+    return peerID ? convert(peerID) : "";
+}
+
 vector<string> ofxiGKSession::getConnectedPeers() {
     return convertToVectorFromNSArray([wrapper connectedPeers], convertFromNSStringToStringBlocks);
 }
 
+vector<string> ofxiGKSession::getConnectedDisplayNames() {
+    return convertToVectorFromNSArray([wrapper connectedDisplayNames], convertFromNSStringToStringBlocks);
+}
+
 vector<string> ofxiGKSession::getAvailablePeers() {
     return convertToVectorFromNSArray([wrapper availablePeers], convertFromNSStringToStringBlocks);
+}
+
+vector<string> ofxiGKSession::getAvailableDisplayNames() {
+    return convertToVectorFromNSArray([wrapper availableDisplayNames], convertFromNSStringToStringBlocks);
 }

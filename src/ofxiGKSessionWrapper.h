@@ -19,8 +19,8 @@
     GKSession *session;
     ofxiGKSessionDataReceiver *receiver;
     ofxiGKSessionManager *manager;
-    NSMutableArray *connectedPeers;
-    NSMutableArray *availablePeers;
+    NSMutableDictionary *connectedPeers;
+    NSMutableDictionary *availablePeers;
     
     NSString *displayName;
     NSString *sessionID;
@@ -40,6 +40,11 @@
             context:(void *)context;
 
 - (NSArray *)connectedPeers;
+- (NSArray *)connectedDisplayNames;
+- (NSString *)connectedPeerIdForDisplayName:(NSString *)displayName;
+
 - (NSArray *)availablePeers;
+- (NSArray *)availableDisplayNames;
+- (NSString *)availablePeerIdForDisplayName:(NSString *)displayName;
 
 @end

@@ -60,8 +60,12 @@ public:
     const string getDisplayName(string peer) const;
     const string getSessionID() const;
     
+    const string getConnectedPeer(string displayName) const;
+    
     vector<string> getConnectedPeers();
+    vector<string> getConnectedDisplayNames();
     vector<string> getAvailablePeers();
+    vector<string> getAvailableDisplayNames();
 private:
     ofxiGKSessionWrapper *wrapper;
     ofxiGKSessionManager *manager;
