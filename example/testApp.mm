@@ -8,7 +8,6 @@ void testApp::setup(){
 	//If you want a landscape oreintation 
 	//iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);
 	
-    ofBackground(255, 255, 255);
     ofSetBackgroundAuto(false);
     
     ofSetLogLevel(OF_LOG_VERBOSE);
