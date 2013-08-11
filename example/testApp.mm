@@ -10,8 +10,8 @@ void testApp::setup(){
 	
     ofSetLogLevel(OF_LOG_VERBOSE);
     
-	ofBackground(127,127,127);
-    gkSession.setup("display name", "session name");
+	ofBackground(127, 127, 127);
+    gkSession.setup("ofxiGKSessionExample");
     gkSession.setDataReceiver(this);
     gkSession.startServer(OFXI_GKSESSION_MODE_PEER);
 }
