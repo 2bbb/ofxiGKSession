@@ -6,7 +6,7 @@ Wrapper of GKSession for openframeworks on iOS
 
 1. Add GameKit.framework to your project
 2. Add ofxiGKSession & ofxObjective-C++Utility to your project and include ofxiGKSession.h
-3. Open Project Setting -> TARGETS -> Build Phases -> Compile Sources, and add flag "-x objective-c++" for all file of .cpp
+3. Create subclass of ofxiGKSessionDataReceiver and implement receiveData method
 
 ## Dependencies
 
