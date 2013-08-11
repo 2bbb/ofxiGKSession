@@ -87,7 +87,7 @@ __TODO__
 * virtual void peerConnected(string peerID)
 * virtual void peerDisconnected(string peerID)
 * virtual void peerUnavailable(string peerID)
-* 
+
 __TODO__
 
 ## Update history
@@ -102,3 +102,8 @@ MIT License.
 
 * ISHII 2bit [bufferRenaiss co., ltd.]
 * ishii[at]buffer-renaiss.com
+
+## At the last
+
+Please create new issue, if there is a problem.
+And please throw pull request, if you have a cool idea!!
