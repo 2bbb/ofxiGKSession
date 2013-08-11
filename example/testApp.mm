@@ -8,9 +8,11 @@ void testApp::setup(){
 	//If you want a landscape oreintation 
 	//iPhoneSetOrientation(OFXIPHONE_ORIENTATION_LANDSCAPE_RIGHT);
 	
+    ofBackground(255, 255, 255);
+    ofSetBackgroundAuto(false);
+    
     ofSetLogLevel(OF_LOG_VERBOSE);
     
-	ofBackground(127, 127, 127);
     gkSession.setup("ofxiGKSessionExample");
     gkSession.setDataReceiver(this);
     gkSession.startServer(OFXI_GKSESSION_MODE_PEER);
@@ -33,18 +35,20 @@ void testApp::exit(){
 
 //--------------------------------------------------------------
 void testApp::touchDown(ofTouchEventArgs & touch){
-    string str = string("{x:") + ofToString(touch.x) + ",y:" + ofToString(touch.y) + "}";
+    string str = ofToString(touch.x) + "," + ofToString(touch.y);
     gkSession.sendData(str);
 }
 
 //--------------------------------------------------------------
 void testApp::touchMoved(ofTouchEventArgs & touch){
-
+    string str = ofToString(touch.x) + "," + ofToString(touch.y);
+    gkSession.sendData(str);
 }
 
 //--------------------------------------------------------------
 void testApp::touchUp(ofTouchEventArgs & touch){
-
+    string str = ofToString(touch.x) + "," + ofToString(touch.y);
+    gkSession.sendData(str);
 }
 
 //--------------------------------------------------------------

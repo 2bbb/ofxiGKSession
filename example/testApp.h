@@ -25,7 +25,12 @@ public:
     void deviceOrientationChanged(int newOrientation);
     
     void receiveData(const ofBuffer &buffer) {
-        ofLogVerbose() << buffer.getText();
+        const string bufferString = buffer.getText();
+        ofLogVerbose() << bufferString;
+        vector<string> points = ofSplitString(bufferString, ",");
+        int x = ofToInt(points[0]), y = ofToInt(points[1]);
+        ofSetColor(255, 255, 255);
+        ofCircle(x, y, 8);
     }
 private:
     ofxiGKSession gkSession;
