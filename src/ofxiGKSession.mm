@@ -28,21 +28,17 @@ class ofxiGKSessionDefaultManager : public ofxiGKSessionManager {
 private:
     typedef ofxiGKSessionManager Super;
 public:
-    ofxiGKSessionDefaultManager(ofxiGKSession *p2p) {
-        gameKitP2P = p2p;
-    }
+    ofxiGKSessionDefaultManager() {}
 
     virtual virtual void receiveConnectionRequest(string peerID) override {
         Super::receiveConnectionRequest(peerID);
-        gameKitP2P->acceptConnection(peerID);
+        session->acceptConnection(peerID);
     }
 
     virtual void peerAvailable(string peerID) override {
         Super::peerAvailable(peerID);
-        gameKitP2P->connectToPeerID(peerID);
+        session->connectToPeerID(peerID);
     }
-private:
-    ofxiGKSession *gameKitP2P;
 };
 
 // ==========================================================================================
@@ -73,8 +69,11 @@ void ofxiGKSession::setManager(ofxiGKSessionManager *_manager) {
 }
 
 void ofxiGKSession::startServer(ofxiGKSessionMode mode) {
-    [wrapper setManager:(manager ? manager : (manager = new ofxiGKSessionDefaultManager(this)))];
+    [wrapper setManager:(manager ? manager : (manager = new ofxiGKSessionDefaultManager()))];
+    manager->setGKSession(this);
+    
     [wrapper setDataReceiver:(receiver ? receiver : (receiver = (new ofxiGKSessionDefaultDataReceiver())))];
+    
     [wrapper startSessionForSessionMode:(GKSessionMode)mode];
 }
 

@@ -66,6 +66,7 @@ public:
     vector<string> getConnectedDisplayNames();
     vector<string> getAvailablePeers();
     vector<string> getAvailableDisplayNames();
+    
 private:
     ofxiGKSessionWrapper *wrapper;
     ofxiGKSessionManager *manager;

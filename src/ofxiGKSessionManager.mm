@@ -8,6 +8,20 @@
 #import "ofxiGKSessionManager.h"
 #import "ofxiGKSession.h"
 
+void ofxiGKSessionManager::setGKSession(ofxiGKSession *_session) {
+    session = _session;
+}
+
+const string ofxiGKSessionManager::getDisplayName(string peer) const {
+    return session->getDisplayName(peer);
+}
+
+const string ofxiGKSessionManager::getConnectedPeer(string displayName) const {
+    return session->getConnectedPeer(displayName);
+}
+
+#pragma mark default implementation
+
 void ofxiGKSessionManager::connectionWithPeerFailed(string peerID, string errorDescription) {
     ofLogError() << "connection with " << peerID << " failed: " << errorDescription;
 }
